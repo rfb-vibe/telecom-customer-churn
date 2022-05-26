@@ -1,4 +1,8 @@
-# Customer Churn
+# Predicting Telecommunications Customer Churn
+
+**Authors**: [Rebecca Frost-Brewer](https://www.linkedin.com/in/rebecca-frost-brewer/)
+
+***
 
 According to [Profitwell](https://www.profitwell.com/customer-retention/industry-rates), the average churn rate within the telecommunications industry is 22% (churn rate referring to the rate customers close their accounts or end their business relationship).
 
