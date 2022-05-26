@@ -1,6 +1,7 @@
 # Predicting Telecommunications Customer Churn
 
 **Authors**: [Rebecca Frost-Brewer](https://www.linkedin.com/in/rebecca-frost-brewer/)
+<img src="./rfb-headshot.png" alt="headshot" style="width: 100px;" align="left"/>
 
 ***
 
@@ -132,7 +133,7 @@ Testing Classification Report
    macro avg       0.92      0.85      0.88       834
 weighted avg       0.94      0.95      0.94       834
 
-![Confusion Matrix](confusion-table.png)
+![Confusion Matrix](confusion-matrix.png)
 
 # Conclusion and Recommendations
 
@@ -162,6 +163,7 @@ For any additional questions, please contact **Rebecca Frost-Brewer (frostbrewer
 ├── ppt-churn-presentation.pdf    <- PDF version of project presentation
 ├── results-table.png
 ├── confusion-matrix.png
+├── rfb-headshot.png
 └── telecom.csv                   <- Sourced externally
 ```
 
