@@ -130,7 +130,7 @@ weighted avg       0.94      0.95      0.94       834
 
 ![Confusion Matrix](confusion-table.png)
 
-# Conclusion
+# Conclusion and Recommendations
 
 The final tuned XGBoost model achieved an F1-score of 0.79, the highest and closest to 1.0 of all the evaluated models. I recommend SyriaTel utilize the final tuned XGBoost model to predict when its customers will soon churn
 
@@ -144,6 +144,22 @@ Further analysis indicated that the most important features influencing the mode
 
 Both of the bolded features were also influential in other models evaluated, thus I recommend conducting further customer analysis to identify trends regarding calls to customer service – issues, volume, customer service rating. Additionally, based on exploratory analysis, customers with an international plan are more likely to churn than those without an international plan – what about the international plan may be influencing churn?!
 
+# For More Information
+
+Please review our full analysis in [our Jupyter Notebook](./index.ipynb) or our [presentation](./ppt-churn-presentation.pdf).
+
+For any additional questions, please contact **Rebecca Frost-Brewer (frostbrewerr@gmail.com)**
+
+# Repository Structure
+
+```
+├── README.md                     <- The top-level README for reviewers of this project
+├── index.ipynb                   <- Narrative documentation of analysis in Jupyter notebook
+├── ppt-churn-presentation.pdf    <- PDF version of project presentation
+├── results-table.png
+├── confusion-matrix.png
+└── telecom.csv                   <- Sourced externally
+```
 
 
 
