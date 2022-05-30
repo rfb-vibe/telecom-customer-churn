@@ -13,11 +13,7 @@ The telecommunications company, SyriaTel, is faced with the problem of better pr
 
 Finding predictable patterns using a classification model will benefit SyriaTel's business practices to minimize customer churn.
 
-To determine which classification model best predicts potential customer churn, I will evaluate models' performance using the F1 score. The F1 score is the harmonic average of two other metrics, precision and recall, and is suited well to evaluate imbalanced datasets.
-
-Precision summarizes the fraction of examples assigned the positive class that belong to the positive class whereas the recall summarizes how well the positive class was predicted and is the same calculation as sensitivity. Both precision and recall values fall in the range [0,1], with 0 indicating no precision/recall and 1 perfect precision/recall. These values can be combined into one metric, the F1 score, which is the harmonic average of the precision and recall scores. The F1 score also ranges [0,1].
-
-The closer to 1 the F1 score, the more perfect the model is classifying samples.
+To determine which classification model best predicts potential customer churn, **I will evaluate models' performance using the F1 score**. More on this metric to follow. 
 
 # Data Understanding
 
@@ -49,21 +45,19 @@ The data consists of 3,333 observations with 21 features and no missing values.
 * `customer service calls`: number of customer service calls the user has done
 * `churn`: true if the user terminated the contract, otherwise false
 
+
 # Modeling
 ## Baseline Model
 
-For the baseline model, I use a decision tree stump:
-
-`baseline = DecisionTreeClassifier(max_depth = 3,
-                                  class_weight = 'balanced',
-                                  random_state = SEED)`
-
+I begin the predictive modeling process by creating a baseline model from which to build from. The baseline model in this case is a decision stump (using a Decision Tree classifier) with just one split, i.e., a max depth of 1. This classifier will be a weak learner.
 
 ## Vanilla Modeling
 
-I create vanilla models using a decision tree classifier, logistic regression, k-Nearest Neighbors classifier, random forest classifier, and eXtreme Gradient Boost (XGBoost) classifier.
+In this section, I create vanilla models using a decision tree classifier, logistic regression, k-Nearest Neighbors classifier, random forest classifier, and eXtreme Gradient Boost (XGBoost) classifier.
 
 Each model has its own advantages and disadvantages, which is why I will include each to best determine the strongest predictive model for the stakeholder.
+
+These models' parameters are mostly defaults and not tuned for specificity or improvement. This allows for more opportunity to determine which model(s) will be the best to recommend.
 
 ### Decision Tree Classifier
 
@@ -91,9 +85,11 @@ XGBoost, or eXtreme Gradient Boosting, provides a parallel tree boosting that so
 
 ## Tuned Models
 
-Following the first set of vanilla model scores, there is certainly room for improvement in our predictive modeling. While the vanilla XGBoost model had an F1 score of 0.8 on the testing data, it may be possible with further tuning of all five models that we can improve that F1 score.
+Following the first set of vanilla model scores, there is certainly room for improvement in our predictive modeling. While the vanilla RF and XGBoost models had an F1 score of 0.91 on the testing data, it may be possible with further tuning of all five models that we can improve that F1 score.
 
-To best solve our business problem of predicting customer churn, these iterative models will attempt to improve results.
+To best solve our business problem of predicting customer churn, these iterative models will attempt to improve results by utilizing `GridSearchCV` to find the best performing hyperparameters for each model.
+
+In this section, I also include more information on feature importances, classification reports, and confusion matrices.
 
 [**Feature Importances**](https://towardsdatascience.com/understanding-feature-importance-and-how-to-implement-it-in-python-ff0287b20285) refer to techniques that calculate a score for all the input features for a given model; the scores simply represent the "importance" of each feature with a higher score indicating that the specific feature will have a larger effect on the model that is being used to predict a certain variable.
 
@@ -105,7 +101,7 @@ The report also includes the macro average (averaging the unweighted mean per la
 
 The classification report is meaningful to this business problem because the model eventually chosen to predict customer churn should correctly determine a given class.
 
-The [**Confusion Matrix**](https://scikit-learn.org/stable/modules/model_evaluation.html#confusion-matrix) is a function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
+The [**Confusion Matrix**](https://scikit-learn.org/stable/modules/model_evaluation.html#confusion-matrix) is a function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class. Since our data is imbalanced, the included confusion matrices will be normalized such that it will show the percentage prediction of each class made by the model for that specific true label.
 
 The higher the diagonal values of the confusion matrix the better, indicating many correct predictions of True Positives and True Negatives.
 
@@ -119,25 +115,27 @@ The final model selected to address the business problem of predicting customer 
 
 **Final Model Metrics**
 
-* Training F1-Score: 0.93
-* Validation F1-Score: 0.79
-* F1-Score Delta: 0.14
+* Training F1-Score: 0.98
+* Validation F1-Score: 0.94
+* F1-Score Delta: 0.045
 
-Testing Classification Report
+TTesting Classification Report
               precision    recall  f1-score   support
 
        False       0.95      0.98      0.97       713
-        True       0.89      0.72      0.79       121
+        True       0.88      0.69      0.78       121
 
-    accuracy                           0.95       834
-   macro avg       0.92      0.85      0.88       834
-weighted avg       0.94      0.95      0.94       834
+    accuracy                           0.94       834
+   macro avg       0.92      0.84      0.87       834
+weighted avg       0.94      0.94      0.94       834
 
 ![Confusion Matrix](confusion-matrix.png)
 
-# Conclusion and Recommendations
+# Final Model Evaluation
 
-The final tuned XGBoost model achieved an F1-score of 0.79, the highest and closest to 1.0 of all the evaluated models. I recommend SyriaTel utilize the final tuned XGBoost model to predict when its customers will soon churn
+With this iterative model of the XGBoost classifier, the F1-score on the training data is 0.98 and the F1-score on the test data is 0.94. With a delta of 0.05, this model does not seem to be  overfitting the data. Its F1-score is higher (0.94) than the baseline decision stump model (0.81).
+
+Looking at the confusion matrix, the XGBoost model is correctly predicting 98% of True Negatives and 69% of True Positives. Its Type 1 Error (False Positives) are being predicted 31% of the time. The True Positive prediction percentage (69%) is marginally lower than the tuned random forest model and its percentage of Type 1 errors (31%) is marginally higher than the tuned random forest model as well.
 
 Further analysis indicated that the most important features influencing the model are:
 
@@ -147,7 +145,26 @@ Further analysis indicated that the most important features influencing the mode
 4. **whether the customer has an international plan**
 5. the total number of international calls made
 
-Both of the bolded features were also influential in other models evaluated, thus I recommend conducting further customer analysis to identify trends regarding calls to customer service – issues, volume, customer service rating. Additionally, based on exploratory analysis, customers with an international plan are more likely to churn than those without an international plan – what about the international plan may be influencing churn?!
+Both of the bolded features were also influential in other models evaluated, thus I recommend conducting further customer analysis to identify trends regarding calls to customer service – issues, volume, customer service rating. Additionally, based on exploratory analysis, customers with an international plan are more likely to churn than those without an international plan – what about the international plan may be influencing churn?
+
+# Conclusion and Recommendation
+
+The final model selected to address the business problem of predicting customer churn is the tuned XGBoost classifier. Remember, the XGBoost classifier provides parallel tree boosting that can solve many data science problems in a fast and accurate way.
+
+The F1-score is the best metric to measure the performance of the predictive modeling for this business case because it is the harmonic mean of precision and recall, two measures important to predicting a binary class (churn or no churn), averaged to best evaluate imbalanced data.
+
+The F1-score of this final model (the tuned XGBoost model) is 0.94 whereas the baseline model's F1-score is 0.81. Further, this final model correctly predicts True Negatives 98% of the time and True Positives 69% of the time.
+
+A couple limitations of XGBoost that must be noted: XGBoost is more likely to overfit than bagging does (i.e. random forest) and it does not perform as well on sparse and unstructured data. However, in this business case, our data is robust with few outliers (based on exploratory analysis) and a selection of hyperparameters that perform the best.
+
+Lastly, this final model does predict Type 1 errors (False Positives) 31% of the time, so that must be considered in predicting customer churn on future, unseen data.
+
+# Future Work
+
+* Provide a larger dataset: The predictive modeling for SyriaTel can be improved upon for more enhanced performance with a larger dataset from which the models can be trained. Further, the dataset should include dates/time periods to understand when the data had been collected.
+* Further Analysis of Feature Importances:  Whether SyriaTel's customers have a voice mail plan or an international plan as well as the number of international calls made or number of calls made to customer service all had more influence on the churn rate than other features.
+* Evaluate Customer Service: Conduct customer service surveys for more information on why customers are calling
+* Conduct industry benchmarking to determine how SyriaTel's voice mail and international plans compare to its offerings
 
 # For More Information
 
@@ -158,13 +175,20 @@ For any additional questions, please contact **Rebecca Frost-Brewer (frostbrewer
 # Repository Structure
 
 ```
-├── README.md                     <- The top-level README for reviewers of this project
-├── index.ipynb                   <- Narrative documentation of analysis in Jupyter notebook
-├── ppt-churn-presentation.pdf    <- PDF version of project presentation
-├── results-table.png
-├── confusion-matrix.png
+├── README.md                         <- The top-level README for reviewers of this project
+├── index.ipynb                       <- Narrative documentation of analysis in Jupyter notebook
+├── img
+    ├── churn.png
+    ├── final-matrix.png
+    ├── intl-plan.png
+    ├── num-cust-calls.png
+    ├── vm-plan.png
+    └── rfb-headshot.png
+├── jnb-telecom-customer-churn.pdf    <- PDF of jupyter notebook
+├── ppt-churn-presentation.pdf        <- PDF version of project presentation
+├── readme-telecom-customer-churn.pdf <- PDF of github readme
 ├── rfb-headshot.png
-└── telecom.csv                   <- Sourced externally
+└── telecom.csv                       <- Sourced externally
 ```
 
 
