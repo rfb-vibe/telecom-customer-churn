@@ -1,7 +1,7 @@
 # Predicting Telecommunications Customer Churn
 
 **Authors**: [Rebecca Frost-Brewer](https://www.linkedin.com/in/rebecca-frost-brewer/)
-<img src="./rfb-headshot.png" alt="headshot" style="width: 100px;" align="left"/>
+<img src="./img/rfb-headshot.png" alt="headshot" style="width: 100px;" align="left"/>
 
 ***
 
@@ -120,7 +120,7 @@ The final model selected to address the business problem of predicting customer 
 * False F1-Score: 0.97
 * True F1-Score: 0.78
 
-![Confusion Matrix](img/confusion-matrix.png)
+![Confusion Matrix](img/final-matrix.png)
 
 # Final Model Evaluation
 
@@ -178,7 +178,6 @@ For any additional questions, please contact **Rebecca Frost-Brewer (frostbrewer
 ├── jnb-telecom-customer-churn.pdf    <- PDF of jupyter notebook
 ├── ppt-churn-presentation.pdf        <- PDF version of project presentation
 ├── readme-telecom-customer-churn.pdf <- PDF of github readme
-├── rfb-headshot.png
 └── telecom.csv                       <- Sourced externally
 ```
 
