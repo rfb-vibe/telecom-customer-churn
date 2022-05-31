@@ -107,9 +107,7 @@ The higher the diagonal values of the confusion matrix the better, indicating ma
 
 ***
 
-For each of the tuned models, I create a parameters grid that is passed into `GridSearchCV` with scoring set as `F1_weighted` due to the imbalanced dataset in order to determine the best performing parameters for each classifier. Here is the final results table of the tuned models:
-
-![Results Table](results-table.png)
+For each of the tuned models, I create a parameters grid that is passed into `GridSearchCV` with scoring set as `F1_weighted` due to the imbalanced dataset in order to determine the best performing parameters for each classifier.
 
 The final model selected to address the business problem of predicting customer churn is the tuned XGBoost classifier. Remember, the XGBoost classifier provides parallel tree boosting that can solve many data science problems in a fast and accurate way.
 
@@ -118,18 +116,11 @@ The final model selected to address the business problem of predicting customer 
 * Training F1-Score: 0.98
 * Validation F1-Score: 0.94
 * F1-Score Delta: 0.045
+* F1-Score Weighted Average: 0.94
+* False F1-Score: 0.97
+* True F1-Score: 0.78
 
-TTesting Classification Report
-              precision    recall  f1-score   support
-
-       False       0.95      0.98      0.97       713
-        True       0.88      0.69      0.78       121
-
-    accuracy                           0.94       834
-   macro avg       0.92      0.84      0.87       834
-weighted avg       0.94      0.94      0.94       834
-
-![Confusion Matrix](confusion-matrix.png)
+![Confusion Matrix](img/confusion-matrix.png)
 
 # Final Model Evaluation
 
